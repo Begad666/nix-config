@@ -12,6 +12,7 @@
 
     # You can also split up your configuration and import pieces of it here:
     ./sops.nix
+    ./audio.nix
     ./home-manager.nix
     ./nvidia.nix
     ./docker.nix
