@@ -1,5 +1,5 @@
-{ stdenv, fetchFromGitHub, lib, pulseaudio, autoreconfHook, pkg-config
-, nixosTests, gitUpdater, }:
+{ stdenv, fetchFromGitHub, lib, pipewire, autoreconfHook, pkg-config, nixosTests
+, gitUpdater, }:
 
 stdenv.mkDerivation rec {
   pname = "pipewire-module-xrdp";
