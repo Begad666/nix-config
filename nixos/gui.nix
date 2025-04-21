@@ -14,23 +14,6 @@
     "${pkgs.gnome-session}/bin/gnome-session";
   services.xrdp.openFirewall = true;
 
-  environment.systemPackages = with pkgs; [
-    grim # screenshot functionality
-    slurp # screenshot functionality
-    wl-clipboard # wl-copy and wl-paste for copy/paste from stdin / stdout
-    mako # notification system developed by swaywm maintainer
-  ];
-
-  # Enable the gnome-keyring secrets vault.
-  # Will be exposed through DBus to programs willing to store secrets.
-  services.gnome.gnome-keyring.enable = true;
-
-  # Use sway as the wayland server.
-  programs.sway = {
-    enable = true;
-    wrapperFeatures.gtk = true;
-  };
-
   # Disable the GNOME3/GDM auto-suspend feature that cannot be disabled in GUI!
   # If no user is logged in, the machine will power down after 20 minutes.
   systemd.targets.sleep.enable = false;
