@@ -12,8 +12,8 @@
   };
 
   sops.secrets.cloudflare-tunnel = {
-    owner = services.cloudflared.user;
-    group = services.cloudflared.group;
+    owner = config.services.cloudflared.user;
+    group = config.services.cloudflared.group;
     format = "json";
     sopsFile = ../secrets/cloudflare-tunnel.json;
     key = "";
