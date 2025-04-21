@@ -3,15 +3,20 @@
 {
   services.cloudflared = {
     enable = true;
-    # TODO: why does it error with a different user?
-    user = "begad";
     tunnels = {
       "9eebc7a4-5eee-42f9-b31f-30b73ad751e0" = {
-        # TODO: use sops for this
-        credentialsFile = "/home/begad/nixos/server/secrets/cloudflare-tunnel.json";
+        credentialsFile = config.sops.secrets.cloudflare-tunnel.path;
         default = "http_status:404";
       };
     };
+  };
+
+  sops.secrets.cloudflare-tunnel = {
+    owner = services.cloudflared.user;
+    group = services.cloudflared.group;
+    format = "json";
+    sopsFile = ../secrets/cloudflare-tunnel.json;
+    key = "";
   };
 
   # Increase UDP buffer sizes for quic-go

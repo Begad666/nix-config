@@ -11,6 +11,7 @@
     # inputs.hardware.nixosModules.common-ssd
 
     # You can also split up your configuration and import pieces of it here:
+    ./sops.nix
     ./home-manager.nix
     ./nvidia.nix
     ./docker.nix
@@ -94,9 +95,6 @@
   # Open ports in the firewall.
   networking.firewall.allowedTCPPorts = [ 22 3389 ];
   # networking.firewall.allowedUDPPorts = [ ... ];
-
-  # TODO: refactor this into multiple files
-  environment.systemPackages = with pkgs; [ age ssh-to-age sops ];
 
   programs.nix-ld.enable = true;
 
