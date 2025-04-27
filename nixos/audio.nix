@@ -1,7 +1,7 @@
 { config, lib, pkgs, ... }:
 
 {
-  environment.systemPackages = with pkgs; [ pulseaudio-module-xrdp ];
+  environment.systemPackages = with pkgs; [ pulseaudio ];
   hardware.pulseaudio.enable = false;
   security.rtkit.enable = true;
   services.pipewire = {
