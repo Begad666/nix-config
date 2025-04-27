@@ -8,13 +8,9 @@ stdenv.mkDerivation rec {
   src = fetchFromGitHub {
     owner = "neutrinolabs";
     repo = pname;
-    rev = "v${version}";
-    hash = "";
+    rev = "748f562d616590c678d5b06722f3fe5ae9707465";
+    hash = "sha256-7UspJxpxFy/W15Hz4mtLCIxx42t+vpnRxNJk67BmWJk=";
   };
-
-  preConfigure = ''
-    ./bootstrap
-  '';
 
   installPhase = ''
     runHook preInstall
@@ -23,11 +19,10 @@ stdenv.mkDerivation rec {
     install -m 755 src/.libs/*${stdenv.hostPlatform.extensions.sharedLibrary} $out/lib/pipewire/modules
 
     install -m 755 instfiles/load_pw_modules.sh $out/libexec/pipewire-xrdp-module/pipewire_xrdp_init
-    substituteInPlace $out/libexec/pipewire-xrdp-module/pipewire \
-      --replace pw-cli ${pipewire}/bin/pwcli
-      --replace pipewire ${pipewire}/bin/pipewire
-      --replace pw-metadata ${pipewire}/bin/pw-metadata
-      --replace pactl ${pipewire}/bin/pactl
+    substituteInPlace $out/libexec/pipewire-xrdp-module/pipewire_xrdp_init \
+      --replace "(pipewire" "(${pipewire}/bin/pipewire" \
+      --replace pw-cli ${pipewire}/bin/pw-cli \
+      --replace pw-metadata ${pipewire}/bin/pw-metadata \
 
     runHook postInstall
   '';

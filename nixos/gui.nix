@@ -10,10 +10,24 @@
     variant = "";
   };
 
+  environment.systemPackages = with pkgs; [ pipewire-module-xrdp ];
+
   services.xrdp.enable = true;
   services.xrdp.defaultWindowManager =
     "${pkgs.gnome-session}/bin/gnome-session";
   services.xrdp.openFirewall = true;
+  services.pipewire.extraConfig.pipewire = {
+    xrdp = {
+      context.modules = [{
+        name = "libpipewire-module-xrdp";
+        args = {
+          sink.node.latency = 2048;
+          sink.stream.props = { node.name = "xrdp-sink"; };
+          source.stream.props = { node.name = "xrdp-source"; };
+        };
+      }];
+    };
+  };
 
   # Disable the GNOME3/GDM auto-suspend feature that cannot be disabled in GUI!
   # If no user is logged in, the machine will power down after 20 minutes.
