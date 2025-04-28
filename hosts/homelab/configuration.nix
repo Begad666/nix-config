@@ -11,14 +11,13 @@
     # inputs.hardware.nixosModules.common-ssd
 
     # You can also split up your configuration and import pieces of it here:
-    ./sops.nix
-    ./audio.nix
-    ./home-manager.nix
-    ./nvidia.nix
-    ./docker.nix
-    ./gui.nix
-    ./i18n.nix
-    ./cloudflared.nix
+    ../../utils/sops.nix
+    ../../utils/audio.nix
+    ../../utils/nvidia.nix
+    ../../utils/gui.nix
+    ../../utils/i18n.nix
+    ../../services/docker.nix
+    ../../services/cloudflared.nix
 
     # Import your generated (nixos-generate-config) hardware configuration
     ./hardware-configuration.nix
