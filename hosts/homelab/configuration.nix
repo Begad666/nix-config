@@ -18,6 +18,8 @@
     ../../utils/i18n.nix
     ../../services/docker.nix
     ../../services/cloudflared.nix
+    ../../services/postgresql.nix
+    ../../services/vikunja.nix
 
     # Import your generated (nixos-generate-config) hardware configuration
     ./hardware-configuration.nix
@@ -74,6 +76,8 @@
 
   # Enable networking
   networking.networkmanager.enable = true;
+
+  environment.systemPackages = with pkgs; [ home-manager ];
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.begad = {
