@@ -45,10 +45,10 @@
 
   # Add stuff for your user as you see fit:
   # programs.neovim.enable = true;
-  home.packages = with pkgs; [ helvum alsa-utils pavucontrol ];
+  home.packages = with pkgs; [ helvum alsa-utils pavucontrol pass pinentry ];
 
-  # Enable home-manager and git
   programs.home-manager.enable = true;
+  programs.gpg.enable = true;
   programs.git = {
     enable = true;
     userName = "Begad666";
@@ -57,6 +57,11 @@
       key = "2E5B886B47A957A8";
       signByDefault = true;
     };
+  };
+
+  services.gpg-agent = {
+    enable = true;
+    pinentryPackage = pkgs.pinentry;
   };
 
   # Nicely reload system units when changing configs
