@@ -19,7 +19,7 @@
     ../../services/docker.nix
     ../../services/cloudflared.nix
     ../../services/postgresql.nix
-    ../../services/vikunja.nix
+    # ../../services/vikunja.nix
 
     # Import your generated (nixos-generate-config) hardware configuration
     ./hardware-configuration.nix
@@ -97,7 +97,7 @@
   };
 
   # Open ports in the firewall.
-  networking.firewall.allowedTCPPorts = [ 22 3389 ];
+  networking.firewall.allowedTCPPorts = [ 22 3389 5432 ];
   # networking.firewall.allowedUDPPorts = [ ... ];
 
   programs.nix-ld.enable = true;
