@@ -51,6 +51,7 @@
     pavucontrol
     pass
     pinentry
+    firefox
     php83
     php84Packages.composer
   ];
