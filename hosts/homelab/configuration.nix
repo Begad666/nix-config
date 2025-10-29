@@ -21,6 +21,7 @@
     ../../services/postgresql.nix
     # ../../services/vikunja.nix
     ../../gaming/steam.nix
+    ../../gaming/discord.nix
 
     # Import your generated (nixos-generate-config) hardware configuration
     ./hardware-configuration.nix

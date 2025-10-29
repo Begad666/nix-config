@@ -51,7 +51,6 @@
     pavucontrol
     pass
     pinentry
-    vesktop
     php83
     php84Packages.composer
   ];
