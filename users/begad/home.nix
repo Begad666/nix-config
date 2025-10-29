@@ -45,7 +45,16 @@
 
   # Add stuff for your user as you see fit:
   # programs.neovim.enable = true;
-  home.packages = with pkgs; [ helvum alsa-utils pavucontrol pass pinentry ];
+  home.packages = with pkgs; [
+    helvum
+    alsa-utils
+    pavucontrol
+    pass
+    pinentry
+    vesktop
+    php83
+    php84Packages.composer
+  ];
 
   programs.home-manager.enable = true;
   programs.gpg.enable = true;
