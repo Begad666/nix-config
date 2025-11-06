@@ -17,8 +17,8 @@
     "${pkgs.gnome-session}/bin/gnome-session";
   services.xrdp.openFirewall = true;
   services.pipewire.extraConfig.pipewire = {
-    xrdp = {
-      context.modules = [{
+    "10-xrdp" = {
+      "context.modules" = [{
         name = "libpipewire-module-xrdp";
         args = {
           sink.node.latency = 2048;

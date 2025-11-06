@@ -7,8 +7,8 @@ stdenv.mkDerivation rec {
 
   src = fetchFromGitHub {
     owner = "neutrinolabs";
-    repo = pname;
-    rev = "748f562d616590c678d5b06722f3fe5ae9707465";
+    repo = "pipewire-module-xrdp";
+    rev = "v${version}";
     hash = "sha256-7UspJxpxFy/W15Hz4mtLCIxx42t+vpnRxNJk67BmWJk=";
   };
 
