@@ -12,7 +12,7 @@
 
     # You can also split up your configuration and import pieces of it here:
     ../../utils/sops.nix
-    ../../utils/audio-pulseaudio.nix
+    ../../utils/audio-pipewire.nix
     ../../utils/nvidia.nix
     ../../utils/gui.nix
     ../../utils/i18n.nix

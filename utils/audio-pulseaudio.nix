@@ -1,6 +1,9 @@
 { config, lib, pkgs, ... }:
 
 {
-  hardware.pulseaudio.enable = true;
-  hardware.pulseaudio.support32Bit = true;
+  services.pipewire.enable = false;
+  hardware.pulseaudio = {
+    enable = true;
+    support32Bit = true;
+  };
 }
