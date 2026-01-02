@@ -1,23 +1,26 @@
 {
-  description = "Your new nix config";
+  description = "begad's nix configurations and packages";
 
   inputs = {
     # Nixpkgs
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-24.11";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-25.05";
     # You can access packages and modules from different nixpkgs revs
     # at the same time. Here's an working example:
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     # Also see the 'unstable-packages' overlay at 'overlays/default.nix'.
 
     # Home manager
-    home-manager.url = "github:nix-community/home-manager/release-24.11";
+    home-manager.url = "github:nix-community/home-manager/release-25.05";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
     # sops-nix
     sops-nix.url = "github:Mic92/sops-nix";
+
+    # NixOS WSL
+    nixos-wsl.url = "github:nix-community/nixos-wsl/release-25.05";
   };
 
-  outputs = { self, nixpkgs, home-manager, sops-nix, ... }@inputs:
+  outputs = { self, nixpkgs, home-manager, sops-nix, nixos-wsl, ... }@inputs:
     let
       inherit (self) outputs;
       # Supported systems for your flake packages, shell, etc.
@@ -54,11 +57,22 @@
       # Available through 'nixos-rebuild --flake .#your-hostname'
       nixosConfigurations = {
         desktop-6nrallv = nixpkgs.lib.nixosSystem {
+          system = "x86_64-linux";
           specialArgs = { inherit inputs outputs; };
           modules = [
             sops-nix.nixosModules.sops
             # > Our main nixos configuration file <
             ./hosts/homelab/configuration.nix
+          ];
+        };
+        beliku-wsl = nixpkgs.lib.nixosSystem {
+          system = "x86_64-linux";
+          specialArgs = { inherit inputs outputs; };
+          modules = [
+            nixos-wsl.nixosModules.default
+            sops-nix.nixosModules.sops
+            # > Our main nixos configuration file <
+            ./hosts/beliku-wsl/configuration.nix
           ];
         };
       };
@@ -73,6 +87,15 @@
           modules = [
             # > Our main home-manager configuration file <
             ./hosts/homelab/users/begad/home.nix
+          ];
+        };
+        "begad@beliku-wsl" = home-manager.lib.homeManagerConfiguration {
+          pkgs =
+            nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
+          extraSpecialArgs = { inherit inputs outputs; };
+          modules = [
+            # > Our main home-manager configuration file <
+            ./hosts/beliku-wsl/users/begad/home.nix
           ];
         };
       };
