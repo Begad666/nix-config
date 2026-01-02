@@ -9,14 +9,14 @@ stdenv.mkDerivation rec {
     owner = "neutrinolabs";
     repo = "pipewire-module-xrdp";
     rev = "v${version}";
-    hash = "sha256-7UspJxpxFy/W15Hz4mtLCIxx42t+vpnRxNJk67BmWJk=";
+    hash = "sha256-ZiKVAMAFBkMpZFqrn4hjZZPxdR+sBtcd4W30z8pkdzk=";
   };
 
   installPhase = ''
     runHook preInstall
 
-    mkdir -p $out/lib/pipewire/modules $out/libexec/pipewire-xrdp-module $out/etc/xdg/autostart
-    install -m 755 src/.libs/*${stdenv.hostPlatform.extensions.sharedLibrary} $out/lib/pipewire/modules
+    mkdir -p $out/lib/pipewire-3.0/modules $out/libexec/pipewire-xrdp-module $out/etc/xdg/autostart
+    install -m 755 src/.libs/*${stdenv.hostPlatform.extensions.sharedLibrary} $out/lib/pipewire-3.0/modules
 
     install -m 755 instfiles/load_pw_modules.sh $out/libexec/pipewire-xrdp-module/pipewire_xrdp_init
     substituteInPlace $out/libexec/pipewire-xrdp-module/pipewire_xrdp_init \
