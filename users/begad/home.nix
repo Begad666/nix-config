@@ -63,7 +63,7 @@
     userName = "Begad666";
     userEmail = "47504169+Begad666@users.noreply.github.com";
     signing = {
-      key = "2E5B886B47A957A8";
+      key = "F1020E873FA79264!";
       signByDefault = true;
     };
   };
