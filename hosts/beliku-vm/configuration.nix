@@ -13,7 +13,6 @@
     # You can also split up your configuration and import pieces of it here:
     ../../utils/sops.nix
     ../../utils/i18n.nix
-    ../../utils/nvidia.nix
   ];
 
   nixpkgs = {
@@ -59,9 +58,12 @@
     nixPath = lib.mapAttrsToList (n: _: "${n}=flake:${n}") flakeInputs;
   };
 
-  wsl.enable = true;
-  wsl.defaultUser = "begad";
-  networking.hostName = "beliku-wsl";
+  boot.loader.systemd-boot.enable = true;
+  boot.loader.efi.canTouchEfiVariables = true;
+
+  boot.initrd.luks.devices."luks-b865d689-11ac-4cd9-adb4-04e2f5ec27c6".device = "/dev/disk/by-uuid/b865d689-11ac-4cd9-adb4-04e2f5ec27c6";
+
+  networking.hostName = "beliku-vm";
 
   # Enable networking
   networking.networkmanager.enable = true;
@@ -72,7 +74,7 @@
   users.users.begad = {
     isNormalUser = true;
     description = "Begad Atallah";
-    extraGroups = [ "networkmanager" "wheel" "docker" ];
+    extraGroups = [ "networkmanager" "wheel" ];
     packages = with pkgs; [ ];
   };
 
