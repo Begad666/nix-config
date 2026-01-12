@@ -75,6 +75,15 @@
             ./hosts/beliku-wsl/configuration.nix
           ];
         };
+        beliku-vm = nixpkgs.lib.nixosSystem {
+          system = "x86_64-linux";
+          specialArgs = { inherit inputs outputs; };
+          modules = [
+            sops-nix.nixosModules.sops
+            # > Our main nixos configuration file <
+            ./hosts/beliku-vm/configuration.nix
+          ];
+        };
       };
 
       # Standalone home-manager configuration entrypoint
@@ -98,6 +107,14 @@
             ./hosts/beliku-wsl/users/begad/home.nix
           ];
         };
+        "begad@beliku-vm" = home-manager.lib.homeManagerConfiguration {
+          pkgs =
+            nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
+          extraSpecialArgs = { inherit inputs outputs; };
+          modules = [
+            # > Our main home-manager configuration file <
+            ./hosts/beliku-vm/users/begad/home.nix
+          ];
       };
     };
 }
