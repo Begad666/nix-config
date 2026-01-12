@@ -115,6 +115,7 @@
             # > Our main home-manager configuration file <
             ./hosts/beliku-vm/users/begad/home.nix
           ];
+        };
       };
     };
 }
