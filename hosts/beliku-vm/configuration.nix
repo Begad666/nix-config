@@ -13,6 +13,7 @@
     # You can also split up your configuration and import pieces of it here:
     ../../utils/sops.nix
     ../../utils/i18n.nix
+    ./hardware-configuration.nix
   ];
 
   nixpkgs = {
@@ -77,6 +78,8 @@
     extraGroups = [ "networkmanager" "wheel" ];
     packages = with pkgs; [ ];
   };
+
+  services.getty.autologinUser = "begad";
 
   # Open ports in the firewall.
   networking.firewall.allowedTCPPorts = [ 22 ];
