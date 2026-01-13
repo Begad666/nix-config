@@ -54,6 +54,11 @@
     firefox
     php83
     php84Packages.composer
+    zig
+    zls
+    gdb
+    qemu
+    wget
   ];
 
   programs.home-manager.enable = true;
