@@ -10,22 +10,24 @@
     # inputs.hardware.nixosModules.common-cpu-amd
     # inputs.hardware.nixosModules.common-ssd
 
-    # You can also split up your configuration and import pieces of it here:
-    ../../utils/sops.nix
-    ../../utils/audio-pipewire.nix
-    ../../utils/nvidia.nix
-    ../../utils/gui.nix
-    ../../utils/i18n.nix
-    ../../services/docker.nix
-    ../../services/cloudflared.nix
-    ../../services/postgresql.nix
-    # ../../services/vikunja.nix
-    ../../gaming/steam.nix
-    ../../gaming/discord.nix
-
     # Import your generated (nixos-generate-config) hardware configuration
     ./hardware-configuration.nix
   ];
+
+  # Enable custom modules
+  modules = {
+    audio.pipewire.enable = true;
+    gaming.discord.enable = true;
+    gaming.steam.enable = true;
+    services.cloudflared.enable = true;
+    services.docker.enable = true;
+    services.postgresql.enable = true;
+    # services.vikunja.enable = true;
+    utils.desktop.enable = true;
+    utils.i18n.enable = true;
+    utils.nvidia.enable = true;
+    utils.secrets.enable = true;
+  };
 
   nixpkgs = {
     # You can add overlays here

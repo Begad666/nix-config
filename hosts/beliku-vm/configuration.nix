@@ -10,11 +10,14 @@
     # inputs.hardware.nixosModules.common-cpu-amd
     # inputs.hardware.nixosModules.common-ssd
 
-    # You can also split up your configuration and import pieces of it here:
-    ../../utils/sops.nix
-    ../../utils/i18n.nix
     ./hardware-configuration.nix
   ];
+
+  # Enable custom modules
+  modules = {
+    utils.i18n.enable = true;
+    utils.secrets.enable = true;
+  };
 
   nixpkgs = {
     # You can add overlays here
@@ -62,7 +65,8 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  boot.initrd.luks.devices."luks-b865d689-11ac-4cd9-adb4-04e2f5ec27c6".device = "/dev/disk/by-uuid/b865d689-11ac-4cd9-adb4-04e2f5ec27c6";
+  boot.initrd.luks.devices."luks-b865d689-11ac-4cd9-adb4-04e2f5ec27c6".device =
+    "/dev/disk/by-uuid/b865d689-11ac-4cd9-adb4-04e2f5ec27c6";
 
   networking.hostName = "beliku-vm";
 
@@ -76,7 +80,7 @@
     isNormalUser = true;
     description = "Begad Atallah";
     extraGroups = [ "networkmanager" "wheel" ];
-    packages = with pkgs; [ ];
+    packages = [ ];
   };
 
   services.getty.autologinUser = "begad";

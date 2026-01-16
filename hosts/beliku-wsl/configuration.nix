@@ -9,12 +9,14 @@
     # Or modules from other flakes (such as nixos-hardware):
     # inputs.hardware.nixosModules.common-cpu-amd
     # inputs.hardware.nixosModules.common-ssd
-
-    # You can also split up your configuration and import pieces of it here:
-    ../../utils/sops.nix
-    ../../utils/i18n.nix
-    ../../utils/nvidia.nix
   ];
+
+  # Enable custom modules
+  modules = {
+    utils.i18n.enable = true;
+    utils.nvidia.enable = true;
+    utils.secrets.enable = true;
+  };
 
   nixpkgs = {
     # You can add overlays here
@@ -73,7 +75,7 @@
     isNormalUser = true;
     description = "Begad Atallah";
     extraGroups = [ "networkmanager" "wheel" "docker" ];
-    packages = with pkgs; [ ];
+    packages = [ ];
   };
 
   # Open ports in the firewall.

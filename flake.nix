@@ -61,6 +61,20 @@
           specialArgs = { inherit inputs outputs; };
           modules = [
             sops-nix.nixosModules.sops
+            # Auto-import all custom nixos modules
+            outputs.nixosModules.audio-pipewire
+            outputs.nixosModules.audio-pulseaudio
+            outputs.nixosModules.services-cloudflared
+            outputs.nixosModules.services-docker
+            outputs.nixosModules.services-pds
+            outputs.nixosModules.services-postgresql
+            outputs.nixosModules.services-vikunja
+            outputs.nixosModules.utils-desktop
+            outputs.nixosModules.utils-i18n
+            outputs.nixosModules.utils-nvidia
+            outputs.nixosModules.utils-secrets
+            outputs.nixosModules.gaming-discord
+            outputs.nixosModules.gaming-steam
             # > Our main nixos configuration file <
             ./hosts/homelab/configuration.nix
           ];
@@ -71,6 +85,20 @@
           modules = [
             nixos-wsl.nixosModules.default
             sops-nix.nixosModules.sops
+            # Auto-import all custom nixos modules
+            outputs.nixosModules.audio-pipewire
+            outputs.nixosModules.audio-pulseaudio
+            outputs.nixosModules.services-cloudflared
+            outputs.nixosModules.services-docker
+            outputs.nixosModules.services-pds
+            outputs.nixosModules.services-postgresql
+            outputs.nixosModules.services-vikunja
+            outputs.nixosModules.utils-desktop
+            outputs.nixosModules.utils-i18n
+            outputs.nixosModules.utils-nvidia
+            outputs.nixosModules.utils-secrets
+            outputs.nixosModules.gaming-discord
+            outputs.nixosModules.gaming-steam
             # > Our main nixos configuration file <
             ./hosts/beliku-wsl/configuration.nix
           ];
@@ -80,6 +108,20 @@
           specialArgs = { inherit inputs outputs; };
           modules = [
             sops-nix.nixosModules.sops
+            # Auto-import all custom nixos modules
+            outputs.nixosModules.audio-pipewire
+            outputs.nixosModules.audio-pulseaudio
+            outputs.nixosModules.services-cloudflared
+            outputs.nixosModules.services-docker
+            outputs.nixosModules.services-pds
+            outputs.nixosModules.services-postgresql
+            outputs.nixosModules.services-vikunja
+            outputs.nixosModules.utils-desktop
+            outputs.nixosModules.utils-i18n
+            outputs.nixosModules.utils-nvidia
+            outputs.nixosModules.utils-secrets
+            outputs.nixosModules.gaming-discord
+            outputs.nixosModules.gaming-steam
             # > Our main nixos configuration file <
             ./hosts/beliku-vm/configuration.nix
           ];
