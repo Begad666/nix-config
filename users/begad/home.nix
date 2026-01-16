@@ -45,7 +45,7 @@
 
   # Add stuff for your user as you see fit:
   # programs.neovim.enable = true;
-  home.packages = with pkgs; [
+  home.packages = (with pkgs; [
     helvum
     alsa-utils
     pavucontrol
@@ -54,12 +54,12 @@
     firefox
     php83
     php84Packages.composer
-    zig
-    zls
     gdb
     qemu
     wget
-  ];
+    nixfmt-classic
+    nixd
+  ]);
 
   programs.home-manager.enable = true;
   programs.gpg.enable = true;
@@ -83,7 +83,7 @@
 
   services.gpg-agent = {
     enable = true;
-    pinentryPackage = pkgs.pinentry;
+    pinentry.package = pkgs.pinentry;
   };
 
   # Nicely reload system units when changing configs
