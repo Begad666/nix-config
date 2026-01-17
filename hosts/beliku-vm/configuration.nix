@@ -15,6 +15,8 @@
 
   # Enable custom modules
   modules = {
+    desktop.hyprland.enable = true;
+    audio.pipewire.enable = true;
     utils.i18n.enable = true;
     utils.secrets.enable = true;
   };
