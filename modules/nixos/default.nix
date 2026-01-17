@@ -5,6 +5,10 @@
   audio-pipewire = import ./audio/pipewire.nix;
   audio-pulseaudio = import ./audio/pulseaudio.nix;
 
+  # Desktop environment modules
+  desktop-gnome = import ./desktop/gnome.nix;
+  desktop-hyprland = import ./desktop/hyprland.nix;
+
   # Service modules
   services-cloudflared = import ./services/cloudflared.nix;
   services-docker = import ./services/docker.nix;
@@ -13,7 +17,6 @@
   services-vikunja = import ./services/vikunja.nix;
 
   # Utility modules
-  utils-desktop = import ./utils/desktop.nix;
   utils-i18n = import ./utils/i18n.nix;
   utils-nvidia = import ./utils/nvidia.nix;
   utils-secrets = import ./utils/secrets.nix;
