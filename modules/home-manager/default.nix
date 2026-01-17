@@ -3,4 +3,7 @@
 {
   # Desktop modules
   desktop-caelestia = import ./desktop/caelestia/default.nix;
+
+  # Utility modules
+  utils-gc = import ./utils/gc.nix;
 }

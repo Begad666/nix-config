@@ -19,14 +19,11 @@
     # NixOS WSL
     nixos-wsl.url = "github:nix-community/nixos-wsl/release-25.05";
 
-    # Caelestia Shell
-    caelestia-shell = {
-      url = "github:caelestia-dots/shell";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    # Caelestia Nix
+    caelestia-nix.url = "github:Markus328/caelestia-nix";
   };
 
-  outputs = { self, nixpkgs, home-manager, sops-nix, nixos-wsl, caelestia-shell
+  outputs = { self, nixpkgs, home-manager, sops-nix, nixos-wsl, caelestia-nix
     , ... }@inputs:
     let
       inherit (self) outputs;
@@ -146,9 +143,10 @@
             nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
           extraSpecialArgs = { inherit inputs outputs; };
           modules = [
-            caelestia-shell.homeManagerModules.default
+            caelestia-nix.homeManagerModules.default
             # Auto-import all custom home-manager modules
             outputs.homeManagerModules.desktop-caelestia
+            outputs.homeManagerModules.utils-gc
             # > Our main home-manager configuration file <
             ./hosts/homelab/users/begad/home.nix
           ];
@@ -158,9 +156,10 @@
             nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
           extraSpecialArgs = { inherit inputs outputs; };
           modules = [
-            caelestia-shell.homeManagerModules.default
+            caelestia-nix.homeManagerModules.default
             # Auto-import all custom home-manager modules
             outputs.homeManagerModules.desktop-caelestia
+            outputs.homeManagerModules.utils-gc
             # > Our main home-manager configuration file <
             ./hosts/beliku-wsl/users/begad/home.nix
           ];
@@ -170,9 +169,10 @@
             nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
           extraSpecialArgs = { inherit inputs outputs; };
           modules = [
-            caelestia-shell.homeManagerModules.default
+            caelestia-nix.homeManagerModules.default
             # Auto-import all custom home-manager modules
             outputs.homeManagerModules.desktop-caelestia
+            outputs.homeManagerModules.utils-gc
             # > Our main home-manager configuration file <
             ./hosts/beliku-vm/users/begad/home.nix
           ];
