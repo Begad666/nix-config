@@ -16,6 +16,10 @@
 
   # Enable custom modules
   modules = {
+    desktop.gnome = {
+      enable = true;
+      xrdp = true;
+    };
     audio.pipewire.enable = true;
     gaming.discord.enable = true;
     gaming.steam.enable = true;
@@ -23,7 +27,6 @@
     services.docker.enable = true;
     services.postgresql.enable = true;
     # services.vikunja.enable = true;
-    utils.desktop.enable = true;
     utils.i18n.enable = true;
     utils.nvidia.enable = true;
     utils.secrets.enable = true;
@@ -88,7 +91,7 @@
     isNormalUser = true;
     description = "Begad Atallah";
     extraGroups = [ "networkmanager" "wheel" "docker" ];
-    packages = with pkgs; [ nixfmt-classic ];
+    packages = with pkgs; [ ];
   };
 
   # Enable the OpenSSH daemon.

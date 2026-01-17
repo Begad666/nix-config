@@ -79,11 +79,9 @@
   users.users.begad = {
     isNormalUser = true;
     description = "Begad Atallah";
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = [ "networkmanager" "wheel" "plugdev" "i2c" "nfsusers" ];
     packages = [ ];
   };
-
-  services.getty.autologinUser = "begad";
 
   # Open ports in the firewall.
   networking.firewall.allowedTCPPorts = [ 22 ];

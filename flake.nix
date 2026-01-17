@@ -3,14 +3,14 @@
 
   inputs = {
     # Nixpkgs
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-25.05";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-25.11";
     # You can access packages and modules from different nixpkgs revs
     # at the same time. Here's an working example:
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     # Also see the 'unstable-packages' overlay at 'overlays/default.nix'.
 
     # Home manager
-    home-manager.url = "github:nix-community/home-manager/release-25.05";
+    home-manager.url = "github:nix-community/home-manager/release-25.11";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
     # sops-nix
@@ -18,9 +18,16 @@
 
     # NixOS WSL
     nixos-wsl.url = "github:nix-community/nixos-wsl/release-25.05";
+
+    # Caelestia Shell
+    caelestia-shell = {
+      url = "github:caelestia-dots/shell";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = { self, nixpkgs, home-manager, sops-nix, nixos-wsl, ... }@inputs:
+  outputs = { self, nixpkgs, home-manager, sops-nix, nixos-wsl, caelestia-shell
+    , ... }@inputs:
     let
       inherit (self) outputs;
       # Supported systems for your flake packages, shell, etc.
@@ -62,6 +69,8 @@
           modules = [
             sops-nix.nixosModules.sops
             # Auto-import all custom nixos modules
+            outputs.nixosModules.desktop-hyprland
+            outputs.nixosModules.desktop-gnome
             outputs.nixosModules.audio-pipewire
             outputs.nixosModules.audio-pulseaudio
             outputs.nixosModules.services-cloudflared
@@ -69,7 +78,6 @@
             outputs.nixosModules.services-pds
             outputs.nixosModules.services-postgresql
             outputs.nixosModules.services-vikunja
-            outputs.nixosModules.utils-desktop
             outputs.nixosModules.utils-i18n
             outputs.nixosModules.utils-nvidia
             outputs.nixosModules.utils-secrets
@@ -86,6 +94,8 @@
             nixos-wsl.nixosModules.default
             sops-nix.nixosModules.sops
             # Auto-import all custom nixos modules
+            outputs.nixosModules.desktop-hyprland
+            outputs.nixosModules.desktop-gnome
             outputs.nixosModules.audio-pipewire
             outputs.nixosModules.audio-pulseaudio
             outputs.nixosModules.services-cloudflared
@@ -93,7 +103,6 @@
             outputs.nixosModules.services-pds
             outputs.nixosModules.services-postgresql
             outputs.nixosModules.services-vikunja
-            outputs.nixosModules.utils-desktop
             outputs.nixosModules.utils-i18n
             outputs.nixosModules.utils-nvidia
             outputs.nixosModules.utils-secrets
@@ -109,6 +118,8 @@
           modules = [
             sops-nix.nixosModules.sops
             # Auto-import all custom nixos modules
+            outputs.nixosModules.desktop-hyprland
+            outputs.nixosModules.desktop-gnome
             outputs.nixosModules.audio-pipewire
             outputs.nixosModules.audio-pulseaudio
             outputs.nixosModules.services-cloudflared
@@ -116,7 +127,6 @@
             outputs.nixosModules.services-pds
             outputs.nixosModules.services-postgresql
             outputs.nixosModules.services-vikunja
-            outputs.nixosModules.utils-desktop
             outputs.nixosModules.utils-i18n
             outputs.nixosModules.utils-nvidia
             outputs.nixosModules.utils-secrets
@@ -136,6 +146,9 @@
             nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
           extraSpecialArgs = { inherit inputs outputs; };
           modules = [
+            caelestia-shell.homeManagerModules.default
+            # Auto-import all custom home-manager modules
+            outputs.homeManagerModules.desktop-caelestia
             # > Our main home-manager configuration file <
             ./hosts/homelab/users/begad/home.nix
           ];
@@ -145,6 +158,9 @@
             nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
           extraSpecialArgs = { inherit inputs outputs; };
           modules = [
+            caelestia-shell.homeManagerModules.default
+            # Auto-import all custom home-manager modules
+            outputs.homeManagerModules.desktop-caelestia
             # > Our main home-manager configuration file <
             ./hosts/beliku-wsl/users/begad/home.nix
           ];
@@ -154,6 +170,9 @@
             nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
           extraSpecialArgs = { inherit inputs outputs; };
           modules = [
+            caelestia-shell.homeManagerModules.default
+            # Auto-import all custom home-manager modules
+            outputs.homeManagerModules.desktop-caelestia
             # > Our main home-manager configuration file <
             ./hosts/beliku-vm/users/begad/home.nix
           ];

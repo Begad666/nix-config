@@ -1,0 +1,1 @@
+/home/begad/nix-config/modules/home-manager/desktop/caelestia/background.png

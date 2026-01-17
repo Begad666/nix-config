@@ -50,7 +50,7 @@
     alsa-utils
     pavucontrol
     pass
-    pinentry
+    pinentry-gtk2
     firefox
     php83
     php84Packages.composer
@@ -59,14 +59,19 @@
     wget
     nixfmt-classic
     nixd
+    tree
   ]);
 
   programs.home-manager.enable = true;
   programs.gpg.enable = true;
   programs.git = {
     enable = true;
-    userName = "Begad666";
-    userEmail = "47504169+Begad666@users.noreply.github.com";
+    settings = {
+      user = {
+        name = "Begad666";
+        email = "47504169+Begad666@users.noreply.github.com";
+      };
+    };
     signing = {
       key = "F1020E873FA79264!";
       signByDefault = true;
@@ -83,7 +88,7 @@
 
   services.gpg-agent = {
     enable = true;
-    pinentry.package = pkgs.pinentry;
+    pinentry.package = pkgs.pinentry-gtk2;
   };
 
   # Nicely reload system units when changing configs
