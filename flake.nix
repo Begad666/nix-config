@@ -21,10 +21,12 @@
 
     # Caelestia Nix
     caelestia-nix.url = "github:Markus328/caelestia-nix";
+
+    # Caelestia Shell
+    caelestia-shell.url = "github:caelestia-dots/caelestia-shell";
   };
 
-  outputs = { self, nixpkgs, home-manager, sops-nix, nixos-wsl, caelestia-nix
-    , ... }@inputs:
+  outputs = { self, nixpkgs, home-manager, ... }@inputs:
     let
       inherit (self) outputs;
       # Supported systems for your flake packages, shell, etc.
@@ -64,7 +66,7 @@
           system = "x86_64-linux";
           specialArgs = { inherit inputs outputs; };
           modules = [
-            sops-nix.nixosModules.sops
+            inputs.sops-nix.nixosModules.sops
             # Auto-import all custom nixos modules
             outputs.nixosModules.desktop-hyprland
             outputs.nixosModules.desktop-gnome
@@ -88,8 +90,8 @@
           system = "x86_64-linux";
           specialArgs = { inherit inputs outputs; };
           modules = [
-            nixos-wsl.nixosModules.default
-            sops-nix.nixosModules.sops
+            inputs.nixos-wsl.nixosModules.default
+            inputs.sops-nix.nixosModules.sops
             # Auto-import all custom nixos modules
             outputs.nixosModules.desktop-hyprland
             outputs.nixosModules.desktop-gnome
@@ -113,7 +115,7 @@
           system = "x86_64-linux";
           specialArgs = { inherit inputs outputs; };
           modules = [
-            sops-nix.nixosModules.sops
+            inputs.sops-nix.nixosModules.sops
             # Auto-import all custom nixos modules
             outputs.nixosModules.desktop-hyprland
             outputs.nixosModules.desktop-gnome
@@ -143,7 +145,7 @@
             nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
           extraSpecialArgs = { inherit inputs outputs; };
           modules = [
-            caelestia-nix.homeManagerModules.default
+            inputs.caelestia-nix.homeManagerModules.default
             # Auto-import all custom home-manager modules
             outputs.homeManagerModules.desktop-caelestia
             outputs.homeManagerModules.utils-gc
@@ -156,7 +158,7 @@
             nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
           extraSpecialArgs = { inherit inputs outputs; };
           modules = [
-            caelestia-nix.homeManagerModules.default
+            inputs.caelestia-nix.homeManagerModules.default
             # Auto-import all custom home-manager modules
             outputs.homeManagerModules.desktop-caelestia
             outputs.homeManagerModules.utils-gc
@@ -169,7 +171,8 @@
             nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
           extraSpecialArgs = { inherit inputs outputs; };
           modules = [
-            caelestia-nix.homeManagerModules.default
+            inputs.caelestia-nix.homeManagerModules.default
+            inputs.caelestia-shell.homeManagerModules.default
             # Auto-import all custom home-manager modules
             outputs.homeManagerModules.desktop-caelestia
             outputs.homeManagerModules.utils-gc
