@@ -102,9 +102,10 @@
     bypassWorkqueues = true;
   };
   # Risky, but allows for hibernation with ZFS
-  boot.zfs.allowHibernation = true;
-  boot.kernelParams =
-    [ "zfs.zfs_arc_max=4294967296" "resume=/dev/mapper/crypt-swap" ];
+  # boot.zfs.allowHibernation = true;
+  # boot.kernelParams =
+  #   [ "zfs.zfs_arc_max=4294967296" "resume=/dev/mapper/crypt-swap" ];
+  boot.kernelParams = [ "zfs.zfs_arc_max=4294967296" ];
 
   fileSystems."/boot".options = [ "fmask=0077" "dmask=0077" "umask=0077" ];
 
