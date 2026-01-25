@@ -7,7 +7,8 @@ with lib;
     enable = mkOption {
       type = types.bool;
       default = false;
-      description = "Enable SOPS secrets management with age encryption";
+      description =
+        "Enable SOPS secrets management with age encryption based on SSH host key.";
     };
   };
 
@@ -15,8 +16,14 @@ with lib;
     environment.systemPackages = with pkgs; [ age ssh-to-age sops ];
     sops = {
       defaultSopsFile = ../../../secrets/default.yaml;
-      age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
-      age.keyFile = "/etc/age/keys.txt";
+      age = mkMerge [
+        (mkIf config.modules.utils.persistence.enable {
+          sshKeyPaths = [ "/persist/etc/ssh/ssh_host_ed25519_key" ];
+        })
+        (mkIf (!config.modules.utils.persistence.enable) {
+          sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
+        })
+      ];
     };
   };
 }
