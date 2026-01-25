@@ -8,7 +8,7 @@ with lib;
       type = types.bool;
       default = false;
       description =
-        "Enable SOPS secrets management with age encryption based on SSH host key.";
+        "Enable SOPS secrets management with age encryption based on SSH host keys.";
     };
   };
 
@@ -16,6 +16,14 @@ with lib;
     environment.systemPackages = with pkgs; [ age ssh-to-age sops ];
     sops = {
       defaultSopsFile = ../../../secrets/default.yaml;
+      gnupg = mkMerge [
+        (mkIf config.modules.utils.persistence.enable {
+          sshKeyPaths = [ "/persist/etc/ssh/ssh_host_rsa_key" ];
+        })
+        (mkIf (!config.modules.utils.persistence.enable) {
+          sshKeyPaths = [ "/etc/ssh/ssh_host_rsa_key" ];
+        })
+      ];
       age = mkMerge [
         (mkIf config.modules.utils.persistence.enable {
           sshKeyPaths = [ "/persist/etc/ssh/ssh_host_ed25519_key" ];
