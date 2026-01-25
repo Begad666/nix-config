@@ -76,10 +76,9 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
+  networking.useDHCP = lib.mkDefault true;
   networking.hostName = "homelab";
-
   networking.hostId = "be392f4e";
-  boot.initrd.systemd.enable = true;
   boot.initrd.postDeviceCommands = ''
     mkdir -p /mnt/keys
     mount /dev/mapper/crypt-keys /mnt/keys
@@ -91,20 +90,25 @@
     echo "[initrd] postMountCommands done"
   '';
   boot.initrd.luks.devices."crypt-keys" = {
-    device = "/dev/disk/by-uuid/";
+    device = "/dev/disk/by-uuid/68b58f46-e2fa-45ed-8585-eb4fc826dd6a";
     bypassWorkqueues = true;
   };
   boot.initrd.luks.devices."crypt-nixos" = {
-    device = "/dev/disk/by-uuid/";
+    device = "/dev/disk/by-uuid/3a538d1b-c8b1-42c3-8676-65f9455da504";
     bypassWorkqueues = true;
   };
   boot.initrd.luks.devices."crypt-swap" = {
-    device = "/dev/disk/by-uuid/";
+    device = "/dev/disk/by-uuid/e5b4f2e9-9909-48fa-9b91-e31e38b546ff";
     bypassWorkqueues = true;
   };
   # Risky, but allows for hibernation with ZFS
   boot.zfs.allowHibernation = true;
-  boot.kernelParams = [ "zfs.zfs_arc_max=4294967296" ];
+  boot.kernelParams =
+    [ "zfs.zfs_arc_max=4294967296" "resume=/dev/mapper/crypt-swap" ];
+
+  fileSystems."/boot".options = [ "fmask=0077" "dmask=0077" "umask=0077" ];
+
+  fileSystems."/persist".neededForBoot = true;
 
   # Enable networking
   networking.networkmanager.enable = true;
