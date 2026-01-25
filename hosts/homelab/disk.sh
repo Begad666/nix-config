@@ -1,10 +1,15 @@
 # !/bin/sh
+
+echo "Formatting /dev/sda..."
 parted /dev/sda -- mklabel gpt
+
+echo "Creating boot partition /dev/sda1..."
 parted /dev/sda -- mkpart ESP fat32 1MiB 2GiB
 parted /dev/sda -- set 1 boot on
 parted /dev/sda -- set 1 esp on
 mkfs.vfat /dev/sda1
 
+echo "Creating encrypted root partition /dev/sda2..."
 parted /dev/sda -- mkpart nixos 2GiB 300GiB
 cryptsetup luksFormat /dev/sda2
 cryptsetup open /dev/sda2 crypt-nixos
@@ -20,20 +25,25 @@ zpool create -o ashift=12 \
   -m none \
   rpool "$ZPOOL_DEV"
 
+echo "Creating encrypted swap partition /dev/sda3..."
 parted /dev/sda -- mkpart swap -32GiB 100%
 cryptsetup luksFormat /dev/sda3
 cryptsetup open /dev/sda3 crypt-swap
 mkswap /dev/mapper/crypt-swap
 swapon /dev/mapper/crypt-swap
 
-# Exact bytes used here
-parted /dev/sda -- mkpart keys -34426847232B -32GiB
+echo "Creating encrypted keys partition /dev/sda4..."
+# Exact sectors used here
+parted /dev/sda -- mkpart keys 870463488s -32GiB
 cryptsetup luksFormat /dev/sda4
 cryptsetup open /dev/sda4 crypt-keys
 mkfs.ext4 /dev/mapper/crypt-keys
 
-parted /dev/sda -- mkpart qubes 300GiB -34426847232B
+echo "Creating Qubes partition /dev/sda5..."
+# Exact sectors used here
+parted /dev/sda -- mkpart qubes 300GiB 870463488s
 
+echo "Generating encryption keys..."
 mkdir -p /mnt/keys
 mount /dev/mapper/crypt-keys /mnt/keys
 openssl rand -out /mnt/keys/system.key 32
@@ -41,6 +51,7 @@ openssl rand -out /mnt/keys/user.key 32
 chmod 0400 /mnt/keys/*.key
 sync
 
+echo "Creating ZFS datasets..."
 zfs create -o mountpoint=none \
            rpool/local
 
@@ -70,6 +81,8 @@ zfs create -o encryption=aes-256-gcm \
 
 zfs create -o mountpoint=legacy \
            rpool/user/home
+
+echo "Mounting filesystems..."
 
 mount -t zfs rpool/system/root /mnt
 
