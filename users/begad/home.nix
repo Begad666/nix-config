@@ -13,7 +13,11 @@
     # ./nvim.nix
   ];
 
-  modules = { utils.gc.enable = true; };
+  modules = {
+    shell.bash.enable = true;
+    # shell.oh-my-posh.enable = true;
+    utils.gc.enable = true;
+  };
 
   nixpkgs = {
     # You can add overlays here

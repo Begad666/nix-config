@@ -7,13 +7,23 @@
   # You can change versions, add patches, set compilation flags, anything really.
   # https://nixos.wiki/wiki/Overlays
   modifications = final: prev: {
-    # TODO: fix this
+    # TODO: fix it not building
     vikunja = prev.vikunja.overrideAttrs (old: {
       src = prev.fetchFromGitHub {
         owner = "go-vikunja";
         repo = "vikunja";
         rev = "7b626cd2f565dfcf7aa23cc1e098bc1fcd134dde";
         hash = "sha256-xBJXKUs3Q+RPYOayLX5TO4PzckuLXutucY38NCpJ2o4=";
+      };
+    });
+    # TODO: fix the build issue upstream, https://github.com/JanDeDobbeleer/oh-my-posh/issues/7246
+    oh-my-posh = prev.oh-my-posh.overrideAttrs (old: rec {
+      version = "29.0.2";
+      src = prev.fetchFromGitHub {
+        owner = "jandedobbeleer";
+        repo = "oh-my-posh";
+        tag = "v${version}";
+        hash = "sha256-Ir7E8EyQ1pnDQG4bzn5ZCEkWNpoF/WXBCa8mWqz/66M=";
       };
     });
     # example = prev.example.overrideAttrs (oldAttrs: rec {

@@ -20,6 +20,7 @@
   utils-i18n = import ./utils/i18n.nix;
   utils-nvidia = import ./utils/nvidia.nix;
   utils-secrets = import ./utils/secrets.nix;
+  utils-persistence = import ./utils/persistence.nix;
 
   # Gaming modules
   gaming-discord = import ./gaming/discord.nix;

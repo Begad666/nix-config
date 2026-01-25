@@ -12,10 +12,9 @@ with lib;
   };
 
   config = mkIf config.modules.utils.gc.enable {
-    home-manager = { backupFileExtension = "bak"; };
-    home.gc = {
+    nix.gc = {
       automatic = true;
-      frequency = "weekly";
+      dates = "weekly";
       options = "--delete-older-than 7d";
     };
   };

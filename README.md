@@ -9,7 +9,7 @@ This repo contains the Nix flake and configurations used for all my home-manager
   Contains NixOS configurations, in directories named after the host's purpose.
   Each host directory should contain a `./configuration.nix`, and optionally a `users` directory if needed.
 
-  Additional nix modules per host is allowed, but prefer extracting to shared directories if possible.
+  Additional nix modules per host is allowed, but prefer extracting to shared modules if possible.
   Same goes for `./configuration.nix`.
 
 - `/hosts/<host>/users`
@@ -17,7 +17,7 @@ This repo contains the Nix flake and configurations used for all my home-manager
   Contains home-manager configurations for users of the host.
   Each user directory should contain a `./home.nix` file.
 
-  Additional nix modules per user is allowed, but prefer extracting to shared directories if possible.
+  Additional nix modules per user is allowed, but prefer extracting to shared modules if possible.
   Same goes for `./home.nix`
 
 - `/users`

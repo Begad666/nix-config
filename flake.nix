@@ -23,7 +23,10 @@
     caelestia-nix.url = "github:Markus328/caelestia-nix";
 
     # Caelestia Shell
-    caelestia-shell.url = "github:caelestia-dots/caelestia-shell";
+    caelestia-shell.url = "github:caelestia-dots/shell";
+
+    # Impermanence
+    impermanence.url = "github:nix-community/impermanence";
   };
 
   outputs = { self, nixpkgs, home-manager, ... }@inputs:
@@ -55,33 +58,23 @@
       # Reusable nixos modules you might want to export
       # These are usually stuff you would upstream into nixpkgs
       nixosModules = import ./modules/nixos;
+      allNixosModules =
+        nixpkgs.lib.flatten (nixpkgs.lib.attrValues outputs.nixosModules);
       # Reusable home-manager modules you might want to export
       # These are usually stuff you would upstream into home-manager
       homeManagerModules = import ./modules/home-manager;
+      allHomeManagerModules =
+        nixpkgs.lib.flatten (nixpkgs.lib.attrValues outputs.homeManagerModules);
 
       # NixOS configuration entrypoint
       # Available through 'nixos-rebuild --flake .#your-hostname'
       nixosConfigurations = {
-        desktop-6nrallv = nixpkgs.lib.nixosSystem {
+        homelab = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
           specialArgs = { inherit inputs outputs; };
-          modules = [
+          modules = outputs.allNixosModules ++ [
+            inputs.impermanence.nixosModules.impermanence
             inputs.sops-nix.nixosModules.sops
-            # Auto-import all custom nixos modules
-            outputs.nixosModules.desktop-hyprland
-            outputs.nixosModules.desktop-gnome
-            outputs.nixosModules.audio-pipewire
-            outputs.nixosModules.audio-pulseaudio
-            outputs.nixosModules.services-cloudflared
-            outputs.nixosModules.services-docker
-            outputs.nixosModules.services-pds
-            outputs.nixosModules.services-postgresql
-            outputs.nixosModules.services-vikunja
-            outputs.nixosModules.utils-i18n
-            outputs.nixosModules.utils-nvidia
-            outputs.nixosModules.utils-secrets
-            outputs.nixosModules.gaming-discord
-            outputs.nixosModules.gaming-steam
             # > Our main nixos configuration file <
             ./hosts/homelab/configuration.nix
           ];
@@ -89,24 +82,9 @@
         beliku-wsl = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
           specialArgs = { inherit inputs outputs; };
-          modules = [
+          modules = outputs.allNixosModules ++ [
             inputs.nixos-wsl.nixosModules.default
             inputs.sops-nix.nixosModules.sops
-            # Auto-import all custom nixos modules
-            outputs.nixosModules.desktop-hyprland
-            outputs.nixosModules.desktop-gnome
-            outputs.nixosModules.audio-pipewire
-            outputs.nixosModules.audio-pulseaudio
-            outputs.nixosModules.services-cloudflared
-            outputs.nixosModules.services-docker
-            outputs.nixosModules.services-pds
-            outputs.nixosModules.services-postgresql
-            outputs.nixosModules.services-vikunja
-            outputs.nixosModules.utils-i18n
-            outputs.nixosModules.utils-nvidia
-            outputs.nixosModules.utils-secrets
-            outputs.nixosModules.gaming-discord
-            outputs.nixosModules.gaming-steam
             # > Our main nixos configuration file <
             ./hosts/beliku-wsl/configuration.nix
           ];
@@ -114,23 +92,8 @@
         beliku-vm = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
           specialArgs = { inherit inputs outputs; };
-          modules = [
+          modules = outputs.allNixosModules ++ [
             inputs.sops-nix.nixosModules.sops
-            # Auto-import all custom nixos modules
-            outputs.nixosModules.desktop-hyprland
-            outputs.nixosModules.desktop-gnome
-            outputs.nixosModules.audio-pipewire
-            outputs.nixosModules.audio-pulseaudio
-            outputs.nixosModules.services-cloudflared
-            outputs.nixosModules.services-docker
-            outputs.nixosModules.services-pds
-            outputs.nixosModules.services-postgresql
-            outputs.nixosModules.services-vikunja
-            outputs.nixosModules.utils-i18n
-            outputs.nixosModules.utils-nvidia
-            outputs.nixosModules.utils-secrets
-            outputs.nixosModules.gaming-discord
-            outputs.nixosModules.gaming-steam
             # > Our main nixos configuration file <
             ./hosts/beliku-vm/configuration.nix
           ];
@@ -140,15 +103,13 @@
       # Standalone home-manager configuration entrypoint
       # Available through 'home-manager --flake .#your-username@your-hostname'
       homeConfigurations = {
-        "begad@desktop-6nrallv" = home-manager.lib.homeManagerConfiguration {
+        "begad@homelab" = home-manager.lib.homeManagerConfiguration {
           pkgs =
             nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
           extraSpecialArgs = { inherit inputs outputs; };
-          modules = [
-            inputs.caelestia-nix.homeManagerModules.default
-            # Auto-import all custom home-manager modules
-            outputs.homeManagerModules.desktop-caelestia
-            outputs.homeManagerModules.utils-gc
+          modules = outputs.allHomeManagerModules ++ [
+            # inputs.caelestia-nix.homeManagerModules.default
+            inputs.caelestia-shell.homeManagerModules.default
             # > Our main home-manager configuration file <
             ./hosts/homelab/users/begad/home.nix
           ];
@@ -157,11 +118,9 @@
           pkgs =
             nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
           extraSpecialArgs = { inherit inputs outputs; };
-          modules = [
-            inputs.caelestia-nix.homeManagerModules.default
-            # Auto-import all custom home-manager modules
-            outputs.homeManagerModules.desktop-caelestia
-            outputs.homeManagerModules.utils-gc
+          modules = outputs.allHomeManagerModules ++ [
+            # inputs.caelestia-nix.homeManagerModules.default
+            inputs.caelestia-shell.homeManagerModules.default
             # > Our main home-manager configuration file <
             ./hosts/beliku-wsl/users/begad/home.nix
           ];
@@ -170,12 +129,9 @@
           pkgs =
             nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
           extraSpecialArgs = { inherit inputs outputs; };
-          modules = [
+          modules = outputs.allHomeManagerModules ++ [
             inputs.caelestia-nix.homeManagerModules.default
             inputs.caelestia-shell.homeManagerModules.default
-            # Auto-import all custom home-manager modules
-            outputs.homeManagerModules.desktop-caelestia
-            outputs.homeManagerModules.utils-gc
             # > Our main home-manager configuration file <
             ./hosts/beliku-vm/users/begad/home.nix
           ];

@@ -16,20 +16,17 @@
 
   # Enable custom modules
   modules = {
-    desktop.gnome = {
-      enable = true;
-      xrdp = true;
-    };
     audio.pipewire.enable = true;
     gaming.discord.enable = true;
     gaming.steam.enable = true;
     services.cloudflared.enable = true;
     services.docker.enable = true;
-    services.postgresql.enable = true;
+    # services.postgresql.enable = true;
     # services.vikunja.enable = true;
     utils.i18n.enable = true;
     utils.nvidia.enable = true;
     utils.secrets.enable = true;
+    utils.persistence.enable = true;
   };
 
   nixpkgs = {
@@ -79,7 +76,35 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  networking.hostName = "desktop-6nrallv";
+  networking.hostName = "homelab";
+
+  networking.hostId = "be392f4e";
+  boot.initrd.systemd.enable = true;
+  boot.initrd.postDeviceCommands = ''
+    mkdir -p /mnt/keys
+    mount /dev/mapper/crypt-keys /mnt/keys
+    echo "[initrd] postDeviceCommands done"
+  '';
+  boot.initrd.postMountCommands = ''
+    umount /mnt/keys
+    /sbin/cryptsetup close crypt-keys
+    echo "[initrd] postMountCommands done"
+  '';
+  boot.initrd.luks.devices."crypt-keys" = {
+    device = "/dev/disk/by-uuid/";
+    bypassWorkqueues = true;
+  };
+  boot.initrd.luks.devices."crypt-nixos" = {
+    device = "/dev/disk/by-uuid/";
+    bypassWorkqueues = true;
+  };
+  boot.initrd.luks.devices."crypt-swap" = {
+    device = "/dev/disk/by-uuid/";
+    bypassWorkqueues = true;
+  };
+  # Risky, but allows for hibernation with ZFS
+  boot.zfs.allowHibernation = true;
+  boot.kernelParams = [ "zfs.zfs_arc_max=4294967296" ];
 
   # Enable networking
   networking.networkmanager.enable = true;
@@ -91,7 +116,11 @@
     isNormalUser = true;
     description = "***REMOVED***";
     extraGroups = [ "networkmanager" "wheel" "docker" ];
-    packages = with pkgs; [ ];
+    openssh.authorizedKeys.keys = [
+      # main device ssh key
+      # should do this better, but whatever for now
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAsdRXkk6FdV65sAa+4Yy7PfjNuwVB8AvKgwZ8x/6xZ7 47504169+Begad666@users.noreply.github.com"
+    ];
   };
 
   # Enable the OpenSSH daemon.
@@ -100,6 +129,7 @@
     settings = {
       PermitRootLogin = "no";
       PasswordAuthentication = false;
+      KbdInteractiveAuthentication = false;
     };
   };
 
@@ -110,5 +140,5 @@
   programs.nix-ld.enable = true;
 
   # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
-  system.stateVersion = "24.11";
+  system.stateVersion = "25.11";
 }

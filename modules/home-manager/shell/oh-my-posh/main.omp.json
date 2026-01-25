@@ -1,0 +1,178 @@
+{
+  "$schema": "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json",
+  "version": 4,
+  "final_space": true,
+  "console_title_template": "{{ if .Root }}root {{ end }}{{ .Shell }} at {{ .Folder }}",
+  "blocks": [
+    {
+      "type": "prompt",
+      "alignment": "left",
+      "segments": [
+        {
+          "type": "session",
+          "style": "diamond",
+          "foreground": "p:text-light",
+          "background": "p:session-bg",
+          "template": " {{ if .SSHSession }}\ueba9 {{ end }}{{ .UserName }}@{{ .HostName }} ",
+          "powerline_symbol": "\ue0b0",
+          "leading_diamond": "\ue0b6"
+        },
+        {
+          "type": "os",
+          "style": "diamond",
+          "foreground": "p:text-light",
+          "background": "p:session-bg",
+          "template": " {{ if .WSL }}WSL at {{ end }}{{.Icon}} ",
+          "powerline_symbol": "\ue0b0",
+          "trailing_diamond": "\ue0b0",
+          "cache": {
+            "duration": "24h",
+            "strategy": "session"
+          }
+        },
+        {
+          "type": "path",
+          "style": "powerline",
+          "foreground": "p:text-light",
+          "background": "p:path-bg",
+          "template": " \uf07c {{ path .Path .Location }} ",
+          "powerline_symbol": "\ue0b0",
+          "interactive": true,
+          "options": {
+            "style": "agnoster"
+          }
+        },
+        {
+          "type": "git",
+          "style": "powerline",
+          "foreground": "p:text-light",
+          "background": "p:text-dark",
+          "template": "{{ if .UpstreamURL }}{{ url .UpstreamIcon .UpstreamURL }} {{ end }}{{ .HEAD }}{{if .BranchStatus }} {{ .BranchStatus }}{{ end }}{{ if .Working.Changed }} \uf044 {{ .Working.String }}{{ end }}{{ if .Staging.Changed }} \uf046 {{ .Staging.String }}{{ end }} ",
+          "powerline_symbol": "\ue0b0",
+          "interactive": true,
+          "options": {
+            "fetch_status": true,
+            "fetch_upstream_icon": true,
+            "branch_max_length": 25,
+            "github_icon": "\uf7a3"
+          }
+        },
+        {
+          "type": "root",
+          "style": "powerline",
+          "foreground": "p:text-light",
+          "background": "p:root-bg",
+          "template": " \uf0e7 ",
+          "powerline_symbol": "\ue0b0"
+        }
+      ]
+    },
+    {
+      "type": "prompt",
+      "alignment": "right",
+      "segments": [
+        {
+          "type": "executiontime",
+          "style": "powerline",
+          "foreground": "p:text-light",
+          "background": "p:default-bg",
+          "background_templates": [
+            "{{ if gt .Ms 3000 }}p:execution-time-long{{ end }}",
+            "{{ if gt .Ms 500 }}p:execution-time-medium{{ end }}"
+          ],
+          "template": " \uf252 {{ .FormattedMs }} ",
+          "powerline_symbol": "\ue0b0",
+          "leading_diamond": "\ue0b6",
+          "leading_powerline_symbol": "\ue0b6",
+          "options": {
+            "always_enabled": true
+          }
+        },
+        {
+          "type": "spotify",
+          "style": "diamond",
+          "foreground": "p:text-light",
+          "background": "p:spotify-bg",
+          "template": "{{ .Icon }} {{ if ne .Status \"stopped\" }}{{ .Artist }} - {{ .Track }}{{ end }} ",
+          "powerline_symbol": "\ue0b0",
+          "min_width": 150
+        }
+      ]
+    },
+    {
+      "type": "prompt",
+      "alignment": "left",
+      "segments": [
+        {
+          "type": "nix-shell",
+          "style": "plain",
+          "foreground": "p:text-light",
+          "background": "p:transparent",
+          "template": " \uf313 {{ .Type }} ",
+          "powerline_symbol": "\ue0b0"
+        },
+        {
+          "type": "shell",
+          "style": "plain",
+          "foreground": "p:text-light",
+          "background": "p:transparent",
+          "template": " \ue795 {{ .Name }} ",
+          "powerline_symbol": "\ue0b0"
+        },
+        {
+          "type": "status",
+          "style": "plain",
+          "foreground": "p:text-light",
+          "foreground_templates": [
+            "{{ if gt .Code 0 }}p:prompt-error{{ end }}"
+          ],
+          "background": "p:transparent",
+          "template": "{{ if gt .Code 0 }}({{.Code}}) {{ end }}\u276f ",
+          "powerline_symbol": "\ue0b0",
+          "options": {
+            "always_enabled": true
+          }
+        }
+      ]
+    },
+    {
+      "type": "rprompt",
+      "alignment": "left",
+      "segments": [
+        {
+          "type": "time",
+          "style": "plain",
+          "foreground": "p:time-text",
+          "background": "p:transparent",
+          "template": " \uf017 {{ .CurrentDate | date .Format }} ",
+          "powerline_symbol": "\ue0b0",
+          "options": {}
+        }
+      ]
+    }
+  ],
+  "transient_prompt": {
+    "template": "<p:default-bg,transparent>\ue0b6</><,p:default-bg> {{ .Folder }} </><p:default-bg,transparent>\ue0b0</> ",
+    "foreground": "p:text-light",
+    "background": "p:transparent"
+  },
+  "secondary_prompt": {
+    "background": "transparent",
+    "foreground": "p:black",
+    "template": "<p:default-bg,transparent>\ue0b6</><,p:default-bg> > </><p:default-bg,transparent>\ue0b0</> "
+  },
+  "palette": {
+    "text-light": "#ffffff",
+    "path-bg": "#61AFEF",
+    "prompt-error": "#ff1919",
+    "spotify-bg": "#1ed760",
+    "session-bg": "#0181c1",
+    "root-bg": "#df5d5d",
+    "default-bg": "#378500",
+    "execution-time-long": "#804400",
+    "execution-time-medium": "#a39600",
+    "text-dark": "#000000",
+    "transparent": "#00000000",
+    "time-text": "#009bc2"
+  }
+}

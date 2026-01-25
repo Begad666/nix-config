@@ -12,6 +12,6 @@ with lib;
   };
 
   config = mkIf config.modules.gaming.discord.enable {
-    environment.systemPackages = with pkgs; [ discord ];
+    environment.systemPackages = with pkgs; [ equicord ];
   };
 }

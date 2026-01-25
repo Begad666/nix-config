@@ -4,6 +4,11 @@
   # Desktop modules
   desktop-caelestia = import ./desktop/caelestia/default.nix;
 
+  # Shell modules
+  shell-bash = import ./shell/bash.nix;
+  shell-zsh = import ./shell/zsh.nix;
+  shell-oh-my-posh = import ./shell/oh-my-posh.nix;
+
   # Utility modules
   utils-gc = import ./utils/gc.nix;
 }
