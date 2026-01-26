@@ -21,8 +21,7 @@ with lib;
       enable = true;
       enableBashIntegration = true;
       enableZshIntegration = true;
-      configFile = ./.
-        + "/oh-my-posh/${config.modules.shell.oh-my-posh.config}.omp.json";
+      configFile = ./. + "/${config.modules.shell.oh-my-posh.config}.omp.json";
     };
   };
 }

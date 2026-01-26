@@ -24,7 +24,6 @@ with lib;
         "/etc/NetworkManager/system-connections"
         "/var/lib/docker"
         "/etc/ssh"
-        "/etc/age"
         "/etc/pki"
         "/var/lib/containers"
       ];

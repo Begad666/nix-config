@@ -7,7 +7,7 @@
   # Shell modules
   shell-bash = import ./shell/bash.nix;
   shell-zsh = import ./shell/zsh.nix;
-  shell-oh-my-posh = import ./shell/oh-my-posh.nix;
+  shell-oh-my-posh = import ./shell/oh-my-posh/default.nix;
 
   # Utility modules
   utils-gc = import ./utils/gc.nix;

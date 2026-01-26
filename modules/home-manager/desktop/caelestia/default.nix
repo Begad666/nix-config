@@ -2,8 +2,7 @@
 
 with lib;
 
-let caelestiaConfigDir = ./.;
-in {
+{
   options.modules.desktop.caelestia = {
     enable = mkOption {
       type = types.bool;
@@ -13,11 +12,12 @@ in {
   };
 
   config = mkIf config.modules.desktop.caelestia.enable {
+    wayland.windowManager.hyprland.enable = true;
     programs.caelestia = {
       enable = true;
       systemd = {
-        enable = false; # if you prefer starting from your compositor
-        target = "graphical-session.target";
+        enable = true; # if you prefer starting from your compositor
+        target = "hyprland-session.target";
         environment = [ ];
       };
       settings = {
