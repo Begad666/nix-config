@@ -10,8 +10,8 @@
     # inputs.hardware.nixosModules.common-cpu-amd
     # inputs.hardware.nixosModules.common-ssd
 
-	(toString /etc/nixos/hardware-configuration.nix)
-	(toString /etc/nixos/networking.nix)
+    ./hardware-configuration.nix
+	  (toString /etc/nixos/networking.nix)
   ];
 
   # Enable custom modules
@@ -87,10 +87,10 @@
     hashedPasswordFile = config.sops.secrets.wg_vps_hashed_password.path;
   };
 
-  swapDevices = [{
-    device = "/swap/swapfile";
-    size = 1024 * 2;
-  }];
+  # swapDevices = [{
+  #   device = "/swap/swapfile";
+  #   size = 1024 * 2;
+  # }];
 
 
   # Open ports in the firewall.
