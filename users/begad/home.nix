@@ -66,6 +66,7 @@
     nixfmt-classic
     nixd
     tree
+	fastfetch
   ]);
 
   programs.home-manager.enable = true;

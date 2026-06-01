@@ -7,6 +7,7 @@
 
   # Desktop environment modules
   desktop-gnome = import ./desktop/gnome.nix;
+  desktop-plasma = import ./desktop/plasma.nix;
   desktop-hyprland = import ./desktop/hyprland.nix;
 
   # Service modules

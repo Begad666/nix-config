@@ -16,8 +16,10 @@
 
   # Enable custom modules
   modules = {
+	desktop.plasma.enable = true;
     audio.pipewire.enable = true;
-    gaming.discord.enable = true;
+    gaming.discord.stable = true;
+	gaming.discord.ptb = true;
     gaming.steam.enable = true;
     services.cloudflared.enable = true;
     services.docker.enable = true;
@@ -26,7 +28,10 @@
     utils.i18n.enable = true;
     utils.nvidia.enable = true;
     utils.secrets.enable = true;
-    utils.persistence.enable = true;
+    utils.persistence = {
+      enable = true;
+	  directories = [ "/data/coolify" ];
+	};
   };
 
   nixpkgs = {
@@ -111,6 +116,9 @@
 
   fileSystems."/persist".neededForBoot = true;
 
+  services.displayManager.sddm.enable = lib.mkForce false;
+  services.xserver.displayManager.startx.enable = true;
+
   # Enable networking
   networking.networkmanager.enable = true;
 
@@ -132,7 +140,7 @@
   services.openssh = {
     enable = true;
     settings = {
-      PermitRootLogin = "no";
+      PermitRootLogin = "prohibit-password";
       PasswordAuthentication = false;
       KbdInteractiveAuthentication = false;
     };

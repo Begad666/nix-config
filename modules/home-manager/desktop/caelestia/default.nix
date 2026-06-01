@@ -12,7 +12,10 @@ with lib;
   };
 
   config = mkIf config.modules.desktop.caelestia.enable {
-    wayland.windowManager.hyprland.enable = true;
+    wayland.windowManager.hyprland = {
+      enable = true;
+      systemd.enable = true;
+	};
     programs.caelestia = {
       enable = true;
       systemd = {
