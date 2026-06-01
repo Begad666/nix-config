@@ -103,10 +103,7 @@
 		wg-vps = nixpkgs.lib.nixosSystem {
 		  system = "x86_64-linux";
 		  specialArgs = { inherit inputs outputs; };
-		#   modules = outputs.allNixosModules ++ [
-			modules = [
-			outputs.nixosModules.utils-secrets
-			"${nixpkgs}/nixos/modules/virtualisation/digital-ocean-image.nix"
+		  modules = outputs.allNixosModules ++ [
             inputs.impermanence.nixosModules.impermanence
 			inputs.sops-nix.nixosModules.sops
 			# > Our main nixos configuration file <
