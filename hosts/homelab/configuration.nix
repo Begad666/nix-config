@@ -16,22 +16,26 @@
 
   # Enable custom modules
   modules = {
-	desktop.plasma.enable = true;
+	  desktop.plasma.enable = true;
     audio.pipewire.enable = true;
     gaming.discord.stable = true;
-	gaming.discord.ptb = true;
+	  gaming.discord.ptb = true;
+	  gaming.discord.canary = true;
     gaming.steam.enable = true;
     services.cloudflared.enable = true;
     services.docker.enable = true;
+    services.openssh.enable = true;
     # services.postgresql.enable = true;
+	  services.samba.enable = true;
     # services.vikunja.enable = true;
     utils.i18n.enable = true;
     utils.nvidia.enable = true;
     utils.secrets.enable = true;
+    utils.users.begad.enable = true;
     utils.persistence = {
       enable = true;
-	  directories = [ "/data/coolify" ];
-	};
+      directories = [ "/data/coolify" ];
+    };
   };
 
   nixpkgs = {
@@ -80,10 +84,13 @@
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
+  boot.zfs.forceImportRoot = false;
 
   networking.useDHCP = lib.mkDefault true;
   networking.hostName = "homelab";
   networking.hostId = "be392f4e";
+  # TODO: migrate to systemd initrd
+  boot.initrd.systemd.enable = false;
   boot.initrd.postDeviceCommands = ''
     mkdir -p /mnt/keys
     mount /dev/mapper/crypt-keys /mnt/keys
@@ -124,31 +131,29 @@
 
   environment.systemPackages = with pkgs; [ home-manager ];
 
-  # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.begad = {
-    isNormalUser = true;
-    description = "***REMOVED***";
-    extraGroups = [ "networkmanager" "wheel" "docker" ];
-    openssh.authorizedKeys.keys = [
-      # main device ssh key
-      # should do this better, but whatever for now
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAsdRXkk6FdV65sAa+4Yy7PfjNuwVB8AvKgwZ8x/6xZ7 47504169+Begad666@users.noreply.github.com"
+  # Open ports in the firewall.
+  # networking.firewall.allowedTCPPorts = [ ... ];
+  # networking.firewall.allowedUDPPorts = [ ... ];
+
+  sops.secrets.wg_home_private_key = {};
+	networking.wireguard.interfaces.wg0 = {
+    ips = [ "10.0.0.2/24" ];
+    privateKeyFile = config.sops.secrets.wg_home_private_key.path;
+
+    peers = [
+      {
+        publicKey = "U9XjnbL6gNjCj9fuRGAiql9S2sIvZFvq5wyimJzdtTo=";
+
+        endpoint = "vps.begad.net:51820";
+
+        allowedIPs = [ "10.0.0.0/24" ];
+
+        # CRITICAL FOR CGNAT: Send a keepalive packet every 25 seconds
+        # to prevent the router from dropping the inbound NAT connection map.
+        persistentKeepalive = 25;
+      }
     ];
   };
-
-  # Enable the OpenSSH daemon.
-  services.openssh = {
-    enable = true;
-    settings = {
-      PermitRootLogin = "prohibit-password";
-      PasswordAuthentication = false;
-      KbdInteractiveAuthentication = false;
-    };
-  };
-
-  # Open ports in the firewall.
-  networking.firewall.allowedTCPPorts = [ 22 3389 5432 ];
-  # networking.firewall.allowedUDPPorts = [ ... ];
 
   programs.nix-ld.enable = true;
 

@@ -12,6 +12,8 @@ with lib;
   };
 
   config = mkIf config.modules.shell.bash.enable {
-    programs.bash = { enable = true; };
+    programs.bash = {
+      enable = true;
+    };
   };
 }

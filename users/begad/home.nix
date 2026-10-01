@@ -52,7 +52,7 @@
   # Add stuff for your user as you see fit:
   # programs.neovim.enable = true;
   home.packages = (with pkgs; [
-    helvum
+    crosspipe
     alsa-utils
     pavucontrol
     pass
@@ -66,7 +66,7 @@
     nixfmt-classic
     nixd
     tree
-	fastfetch
+	  fastfetch
   ]);
 
   programs.home-manager.enable = true;

@@ -11,7 +11,7 @@
     # inputs.hardware.nixosModules.common-ssd
 
     ./hardware-configuration.nix
-	  (toString /etc/nixos/networking.nix)
+	  ./networking.nix
   ];
 
   # Enable custom modules
@@ -63,6 +63,7 @@
   };
 
   sops.secrets.wg_vps_hashed_password.neededForUsers = true;
+  sops.secrets.wg_vps_private_key = {};
   # Workaround for https://github.com/NixOS/nix/issues/8502
   services.logrotate.checkConfig = false;
 
@@ -87,15 +88,59 @@
     hashedPasswordFile = config.sops.secrets.wg_vps_hashed_password.path;
   };
 
-  swapDevices = [{
-    device = "/swap/swapfile";
-    size = 1024 * 2;
-  }];
-
 
   # Open ports in the firewall.
   networking.firewall.allowedTCPPorts = [ 22 80 443 ];
-  # networking.firewall.allowedUDPPorts = [ ... ];
+  networking.firewall.allowedUDPPorts = [ 51820 ];
+
+  services.caddy = {
+    enable = true;
+
+    package = pkgs.caddy.withPlugins {
+      plugins = [ "github.com/mholt/caddy-l4@v0.1.1" ]; # Pin a stable commit hash/version
+      hash = "sha256-CQ4vKkQ9sE6v5C0gcyYPBnDzJiPw5z14a3lY0BLZ81A=";
+    };
+
+    settings = {
+      apps.layer4.servers = {
+        http_passthrough = {
+          listen = [ ":80" ];
+          routes = [{
+            handle = [{
+              handler = "proxy";
+              proxy_protocol = "v2";
+              upstreams = [{ dial = [ "10.0.0.2:80" ]; }];
+            }];
+          }];
+        };
+        https_passthrough = {
+          listen = [ ":443" ];
+          routes = [{
+            handle = [{
+              handler = "proxy";
+              proxy_protocol = "v2";
+              upstreams = [{ dial = [ "10.0.0.2:443" ]; }];
+            }];
+          }];
+        };
+      };
+    };
+  };
+
+  networking.wireguard.interfaces.wg0 = {
+    ips = [ "10.0.0.1/24" ];
+    listenPort = 51820;
+
+    privateKeyFile = config.sops.secrets.wg_vps_private_key.path;
+
+    peers = [
+      {
+        publicKey = "9qfKGdNhELSuQyNNETfWgcmLeh4d3Lehcedft9u3dRQ=";
+
+        allowedIPs = [ "10.0.0.2/32" ];
+      }
+    ];
+  };
 
   # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
   system.stateVersion = "25.11";

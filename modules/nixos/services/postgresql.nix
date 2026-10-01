@@ -9,6 +9,11 @@ with lib;
       default = false;
       description = "Enable PostgreSQL";
     };
+    expose = mkOption {
+      type = types.bool;
+      default = false;
+      description = "Expose PostgreSQL to the network (not recommended)";
+    };
   };
 
   config = mkIf config.modules.services.postgresql.enable {
@@ -39,5 +44,6 @@ with lib;
         }
       ];
     };
+    networking.firewall.allowedTCPPorts = mkIf config.modules.services.postgresql.expose [ 5432 ];
   };
 }

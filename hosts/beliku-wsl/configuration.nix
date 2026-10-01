@@ -16,6 +16,7 @@
     utils.i18n.enable = true;
     utils.nvidia.enable = true;
     utils.secrets.enable = true;
+    utils.users.begad.enable = true;
   };
 
   nixpkgs = {
@@ -70,16 +71,10 @@
 
   environment.systemPackages = with pkgs; [ home-manager ];
 
-  # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.begad = {
-    isNormalUser = true;
-    description = "***REMOVED***";
-    extraGroups = [ "networkmanager" "wheel" "docker" ];
-    packages = [ ];
-  };
+  users.users.begad.extraGroups = [ "docker" ]
 
   # Open ports in the firewall.
-  networking.firewall.allowedTCPPorts = [ 22 ];
+  # networking.firewall.allowedTCPPorts = [ ... ];
   # networking.firewall.allowedUDPPorts = [ ... ];
 
   programs.nix-ld.enable = true;

@@ -12,7 +12,7 @@ with lib;
   };
 
   config = mkIf config.modules.audio.pipewire.enable {
-    environment.systemPackages = with pkgs; [ pulseaudio pavucontrol helvum ];
+    environment.systemPackages = with pkgs; [ pulseaudio pavucontrol crosspipe ];
 
     security.rtkit.enable = true;
     services.pulseaudio.enable = false;

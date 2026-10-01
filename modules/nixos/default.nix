@@ -13,8 +13,10 @@
   # Service modules
   services-cloudflared = import ./services/cloudflared.nix;
   services-docker = import ./services/docker.nix;
+  services-openssh = import ./services/openssh.nix;
   services-pds = import ./services/pds.nix;
   services-postgresql = import ./services/postgresql.nix;
+  services-samba = import ./services/samba.nix;
   services-vikunja = import ./services/vikunja.nix;
 
   # Utility modules
@@ -22,6 +24,7 @@
   utils-nvidia = import ./utils/nvidia.nix;
   utils-secrets = import ./utils/secrets.nix;
   utils-persistence = import ./utils/persistence.nix;
+  utils-users = import ./utils/users.nix;
 
   # Gaming modules
   gaming-discord = import ./gaming/discord.nix;

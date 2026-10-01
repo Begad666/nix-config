@@ -7,10 +7,13 @@ with lib;
     enable = mkOption {
       type = types.bool;
       default = false;
-      description = "Enable bash";
+      description = "Enable zsh";
     };
   };
 
-  config =
-    mkIf config.modules.shell.zsh.enable { programs.zsh = { enable = true; }; };
+  config = mkIf config.modules.shell.zsh.enable {
+    programs.zsh = {
+      enable = true;
+    };
+  };
 }
